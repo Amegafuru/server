@@ -1,0 +1,9 @@
+pip install Flask
+pip install Flask-CORS
+pip install Flask-Validator
+pip install WTForms
+pip install pymongo
+pip install mongoengine
+pip install python-dotenv
+pip install PyJWT
+pip install bcrypt
