@@ -40,6 +40,7 @@ app.register_error_handler(Exception, error_middleware)
 
 # Роут для обработки API
 @app.route('/api/some_endpoint', methods=['GET'])
+@app.route('/register', methods=['GET', 'POST']) #ТЕСТ!!!
 def get_data():
     collection = db[f"{ATLAS_COLLECTION_NAME}"]  # Укажите имя вашей коллекции в MongoDB
 

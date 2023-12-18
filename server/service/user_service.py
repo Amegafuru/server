@@ -1,8 +1,9 @@
 import bcrypt
 import uuid
+import os
 from models.user_model import UserModel
-from service.mail_service import mail_service
-from service.token_service import token_service
+from service.mail_service import MailService
+from service.token_service import TokenService
 from dtos.user_dto import UserDto
 from exceptions.api_error import ApiError
 
@@ -17,11 +18,11 @@ class UserService:
         activation_link = str(uuid.uuid4())
 
         user = UserModel.create(email=email, password=hash_password, activation_link=activation_link)
-        await mail_service.send_activation_mail(email, f"{process.env.API_URL}/api/activate/{activation_link}")
+        await MailService.send_activation_mail(email, f"{os.getenv('API_URL')}/api/activate/{activation_link}")
 
         user_dto = UserDto(user)  # id, email, isActivated
-        tokens = token_service.generate_tokens(user_dto.__dict__)
-        await token_service.save_token(user_dto.id, tokens['refreshToken'])
+        tokens = TokenService.generate_tokens(user_dto.__dict__)
+        await TokenService.save_token(user_dto.id, tokens['refreshToken'])
 
         return {**tokens, "user": user_dto.__dict__}
 
@@ -35,5 +36,3 @@ class UserService:
         await user.save()
 
     # Остальные методы UserService могут быть реализованы аналогичным образом
-
-# Это примерный код, и вам нужно будет адаптировать его под специфику вашего приложения и использованных библиотек

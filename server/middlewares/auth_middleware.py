@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from exceptions.api_error import ApiError
-from service.token_service import tokenService
+from service.token_service import TokenService
 
 def authMiddleware(request, response, next):
     try:
@@ -14,7 +14,7 @@ def authMiddleware(request, response, next):
         if not accessToken:
             return ApiError().UnauthorizedError()  # Возвращаем ошибку "Unauthorized" если отсутствует токен доступа
 
-        userData = tokenService.validateAccessToken(accessToken)
+        userData = TokenService.validateAccessToken(accessToken)
 
         if not userData:
             return ApiError().UnauthorizedError()  # Возвращаем ошибку "Unauthorized" если токен недействителен или отсутствуют данные пользователя
